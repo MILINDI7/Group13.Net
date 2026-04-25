@@ -1,0 +1,108 @@
+﻿@model List<ThirteenthAvenue.ViewModels.AdminOrganizerManagementViewModel>
+
+@{
+    ViewData["Title"] = "Manage Organizers";
+}
+
+<div class="container py-4">
+    <h2 class="mb-4">Manage Organizers</h2>
+
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+                <thead>
+                    <tr>
+                        <th>Business Name</th>
+                        <th>Organizer</th>
+                        <th>Email</th>
+                        <th>Verification</th>
+                        <th>Organizer %</th>
+                        <th>Admin %</th>
+                        <th style="width: 340px;">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var organizer in Model)
+                    {
+                        <tr>
+                            <td>@organizer.BusinessName</td>
+                            <td>@organizer.OrganizerName</td>
+                            <td>@organizer.OrganizerEmail</td>
+                            <td>@organizer.VerificationStatus</td>
+                            <td>@organizer.OrganizerSharePercentage</td>
+                            <td>@organizer.AdminSharePercentage</td>
+                            <td>
+                                <div class="mb-2">
+                                    <form asp-action="VerifyOrganizer" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@organizer.OrganizerProfileId" />
+                                        <button type="submit" class="btn btn-sm btn-success">
+                                            Verify
+                                        </button>
+                                    </form>
+
+                                    <form asp-action="RejectOrganizer" method="post" class="d-inline">
+                                        <input type="hidden" name="id" value="@organizer.OrganizerProfileId" />
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Reject
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <form asp-action="UpdateRevenueShare" method="post" class="row g-2">
+                                    <input type="hidden" name="id" value="@organizer.OrganizerProfileId" />
+
+                                    <div class="col-5">
+                                        <input type="number"
+                                               step="0.01"
+                                               min="0"
+                                               max="100"
+                                               name="organizerSharePercentage"
+                                               value="@organizer.OrganizerSharePercentage"
+                                               class="form-control form-control-sm"
+                                               placeholder="Organizer %" />
+                                    </div>
+
+                                    <div class="col-5">
+                                        <input type="number"
+                                               step="0.01"
+                                               min="0"
+                                               max="100"
+                                               name="adminSharePercentage"
+                                               value="@organizer.AdminSharePercentage"
+                                               class="form-control form-control-sm"
+                                               placeholder="Admin %" />
+                                    </div>
+
+                                    <div class="col-2">
+                                        <button type="submit" class="btn btn-sm btn-primary w-100">
+                                            Save
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p>No organizers found.</p>
+    }
+</div>

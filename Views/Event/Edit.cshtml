@@ -1,0 +1,147 @@
+﻿@model ThirteenthAvenue.ViewModels.CreateEventViewModel
+
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+<div class="container py-4">
+    <h2>Edit Event</h2>
+
+    <form asp-action="Edit" asp-route-id="@ViewBag.EventId" method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="mb-3">
+            <label asp-for="Title" class="form-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label"></label>
+            <select asp-for="CategoryId" asp-items="Model.Categories" class="form-select">
+                <option value="">-- Select Category --</option>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Venue" class="form-label"></label>
+            <input asp-for="Venue" class="form-control" />
+            <span asp-validation-for="Venue" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="City" class="form-label"></label>
+            <input asp-for="City" class="form-control" />
+            <span asp-validation-for="City" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="EventDate" class="form-label"></label>
+            <input asp-for="EventDate" type="date" class="form-control" />
+            <span asp-validation-for="EventDate" class="text-danger"></span>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="StartTime" class="form-label"></label>
+                <input asp-for="StartTime" type="time" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6 mb-3">
+                <label asp-for="EndTime" class="form-label"></label>
+                <input asp-for="EndTime" type="time" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.ExistingBannerImageUrl))
+        {
+            <div class="mb-3">
+                <p class="mb-2"><strong>Current Banner</strong></p>
+                <img src="@Model.ExistingBannerImageUrl" alt="Current Banner" class="img-fluid rounded" style="max-height: 250px;" />
+            </div>
+        }
+
+        <div class="mb-4">
+            <label asp-for="BannerImage" class="form-label"></label>
+            <input asp-for="BannerImage" type="file" class="form-control" accept="image/*" />
+            <span asp-validation-for="BannerImage" class="text-danger"></span>
+        </div>
+
+        <h4 class="mb-3">Ticket Types</h4>
+
+        <div id="ticket-container">
+            @for (int i = 0; i < Model.Tickets.Count; i++)
+            {
+                <div class="border rounded p-3 mb-3 ticket-item">
+                    <div class="mb-3">
+                        <label asp-for="Tickets[i].Name" class="form-label">Ticket Name</label>
+                        <input asp-for="Tickets[i].Name" class="form-control" />
+                        <span asp-validation-for="Tickets[i].Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Tickets[i].Price" class="form-label">Price</label>
+                        <input asp-for="Tickets[i].Price" type="number" step="0.01" class="form-control" />
+                        <span asp-validation-for="Tickets[i].Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Tickets[i].QuantityAvailable" class="form-label">Quantity Available</label>
+                        <input asp-for="Tickets[i].QuantityAvailable" type="number" class="form-control" />
+                        <span asp-validation-for="Tickets[i].QuantityAvailable" class="text-danger"></span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <button type="button" class="btn btn-outline-secondary mb-4" onclick="addTicket()">Add Another Ticket</button>
+
+        <div>
+            <button type="submit" class="btn btn-primary">Update Event</button>
+            <a asp-action="MyEvents" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        let ticketIndex = @Model.Tickets.Count;
+
+        function addTicket() {
+            const container = document.getElementById('ticket-container');
+
+            const html = `
+                <div class="border rounded p-3 mb-3 ticket-item">
+                    <div class="mb-3">
+                        <label class="form-label">Ticket Name</label>
+                        <input name="Tickets[${ticketIndex}].Name" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Price</label>
+                        <input name="Tickets[${ticketIndex}].Price" type="number" step="0.01" class="form-control" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Quantity Available</label>
+                        <input name="Tickets[${ticketIndex}].QuantityAvailable" type="number" class="form-control" />
+                    </div>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('beforeend', html);
+            ticketIndex++;
+        }
+    </script>
+}

@@ -1,0 +1,97 @@
+﻿@model ThirteenthAvenue.ViewModels.LandingPageViewModel
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container py-4">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Discover Events 🎉</h1>
+        <p>Find and book amazing events near you</p>
+
+        <form method="get" class="w-50 mx-auto">
+            <input type="text"
+                   name="search"
+                   value="@Model.Search"
+                   placeholder="Search events by title, city, or venue"
+                   class="form-control" />
+        </form>
+    </div>
+
+    <h3 class="mb-3">Upcoming Events</h3>
+
+    @if (Model.UpcomingEvents.Any())
+    {
+        <div class="row">
+            @foreach (var ev in Model.UpcomingEvents)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        @if (!string.IsNullOrWhiteSpace(ev.BannerImageUrl))
+                        {
+                            <img src="@ev.BannerImageUrl" class="card-img-top" alt="@ev.Title" style="height:220px; object-fit:cover;" />
+                        }
+
+                        <div class="card-body">
+                            <h5 class="card-title">@ev.Title</h5>
+                            <p class="mb-1"><strong>Category:</strong> @ev.Category?.Name</p>
+                            <p class="mb-1"><strong>City:</strong> @ev.City</p>
+                            <p class="mb-1"><strong>Venue:</strong> @ev.Venue</p>
+                            <p class="mb-1"><strong>Date:</strong> @ev.EventDate.ToString("dd MMM yyyy")</p>
+                            <p class="mb-2"><strong>Time:</strong> @ev.StartTime.ToString(@"hh\:mm") - @ev.EndTime.ToString(@"hh\:mm")</p>
+                        </div>
+
+                        <div class="card-footer bg-white border-0">
+                            <a asp-controller="Event" asp-action="Details" asp-route-id="@ev.Id" class="btn btn-outline-primary w-100">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No upcoming published events yet.</p>
+    }
+
+    <hr class="my-5" />
+
+    <h3 class="mb-3">Latest Events</h3>
+
+    @if (Model.LatestEvents.Any())
+    {
+        <div class="row">
+            @foreach (var ev in Model.LatestEvents)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        @if (!string.IsNullOrWhiteSpace(ev.BannerImageUrl))
+                        {
+                            <img src="@ev.BannerImageUrl" class="card-img-top" alt="@ev.Title" style="height:auto; object-fit:cover;" />
+                        }
+
+                        <div class="card-body">
+                            <h5 class="card-title">@ev.Title</h5>
+                            <p class="mb-1"><strong>Category:</strong> @ev.Category?.Name</p>
+                            <p class="mb-1"><strong>City:</strong> @ev.City</p>
+                            <p class="mb-1"><strong>Venue:</strong> @ev.Venue</p>
+                            <p class="mb-1"><strong>Date:</strong> @ev.EventDate.ToString("dd MMM yyyy")</p>
+                        </div>
+
+                        <div class="card-footer bg-white border-0">
+                            <a asp-controller="Event" asp-action="Details" asp-route-id="@ev.Id" class="btn btn-outline-dark w-100">
+                                View Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p>No latest published events yet.</p>
+    }
+</div>

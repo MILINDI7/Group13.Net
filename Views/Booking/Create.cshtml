@@ -1,0 +1,81 @@
+﻿@model ThirteenthAvenue.ViewModels.CreateBookingViewModel
+
+@{
+    ViewData["Title"] = "Book Tickets";
+}
+
+<div class="container py-4">
+    <h2>Book Tickets</h2>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4>@Model.EventTitle</h4>
+            <p class="mb-1"><strong>City:</strong> @Model.City</p>
+            <p class="mb-1"><strong>Venue:</strong> @Model.Venue</p>
+            <p class="mb-1"><strong>Date:</strong> @Model.EventDate.ToString("dd MMM yyyy")</p>
+            <p><strong>Time:</strong> @Model.StartTime.ToString(@"hh\:mm") - @Model.EndTime.ToString(@"hh\:mm")</p>
+        </div>
+    </div>
+
+    <form asp-action="Create" method="post">
+        <input type="hidden" asp-for="EventId" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        @if (!Model.IsAuthenticatedUser)
+        {
+            <div class="card mb-4">
+                <div class="card-header">Guest Information</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label asp-for="GuestName" class="form-label"></label>
+                        <input asp-for="GuestName" class="form-control" />
+                        <span asp-validation-for="GuestName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="GuestEmail" class="form-label"></label>
+                        <input asp-for="GuestEmail" class="form-control" />
+                        <span asp-validation-for="GuestEmail" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="GuestPhone" class="form-label"></label>
+                        <input asp-for="GuestPhone" class="form-control" />
+                        <span asp-validation-for="GuestPhone" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="card mb-4">
+            <div class="card-header">Select Tickets</div>
+            <div class="card-body">
+                @for (int i = 0; i < Model.Tickets.Count; i++)
+                {
+                    <input type="hidden" asp-for="Tickets[i].TicketTypeId" />
+                    <input type="hidden" asp-for="Tickets[i].TicketName" />
+                    <input type="hidden" asp-for="Tickets[i].Price" />
+                    <input type="hidden" asp-for="Tickets[i].AvailableQuantity" />
+
+                    <div class="border rounded p-3 mb-3">
+                        <p class="mb-1"><strong>@Model.Tickets[i].TicketName</strong></p>
+                        <p class="mb-1">Price: @Model.Tickets[i].Price</p>
+                        <p class="mb-2">Available: @Model.Tickets[i].AvailableQuantity</p>
+
+                        <label asp-for="Tickets[i].Quantity" class="form-label">Quantity</label>
+                        <input asp-for="Tickets[i].Quantity" type="number" min="0" class="form-control" />
+                        <span asp-validation-for="Tickets[i].Quantity" class="text-danger"></span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+        <a asp-controller="Event" asp-action="Details" asp-route-id="@Model.EventId" class="btn btn-secondary">Back</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

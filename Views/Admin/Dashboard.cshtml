@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="page-title">Admin Dashboard</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="label">Organizer Management</div>
+            <div class="value">Control</div>
+            <a asp-controller="Admin" asp-action="Organizers" class="btn btn-primary mt-3">Manage Organizers</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="label">Events Oversight</div>
+            <div class="value">Review</div>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary mt-3">View Platform</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="label">Revenue Settings</div>
+            <div class="value">Shares</div>
+            <a asp-controller="Admin" asp-action="Organizers" class="btn btn-outline-dark mt-3">Set Percentages</a>
+        </div>
+    </div>
+</div>

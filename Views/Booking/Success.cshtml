@@ -1,0 +1,35 @@
+﻿@model ThirteenthAvenue.ViewModels.BookingSuccessViewModel
+
+@{
+    ViewData["Title"] = "Booking Successful";
+}
+
+<div class="container py-5">
+    <div class="alert alert-success">
+        <h2>Booking Successful</h2>
+        <p>Your ticket has been sent to <strong>@Model.RecipientEmail</strong>.</p>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <p><strong>Booking Reference:</strong> @Model.BookingReference</p>
+            <p><strong>Transaction Reference:</strong> @Model.PaymentReference</p>
+            <p><strong>Event:</strong> @Model.EventTitle</p>
+            <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("N2") RWF</p>
+            <p><strong>Status:</strong> Paid (Manual Transaction)</p>
+        </div>
+    </div>
+
+    <div class="mt-3">
+        <a asp-controller="Booking"
+           asp-action="DownloadTicket"
+           asp-route-bookingReference="@Model.BookingReference"
+           class="btn btn-success">
+            Download Ticket PDF
+        </a>
+
+        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+            Back to Home
+        </a>
+    </div>
+</div>

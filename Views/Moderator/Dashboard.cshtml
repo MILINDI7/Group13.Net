@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Moderator Dashboard";
+}
+
+<div class="page-title">Moderator Dashboard</div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="stat-card">
+            <div class="label">Organizer Reviews</div>
+            <div class="value">Review</div>
+            <a asp-controller="Admin" asp-action="Organizers" class="btn btn-primary mt-3">Check Organizers</a>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="stat-card">
+            <div class="label">Platform Events</div>
+            <div class="value">Monitor</div>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary mt-3">View Events</a>
+        </div>
+    </div>
+</div>

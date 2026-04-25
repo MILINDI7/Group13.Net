@@ -1,0 +1,31 @@
+﻿@{
+    ViewData["Title"] = "Client Dashboard";
+}
+
+<div class="page-title">Client Dashboard</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="label">Bookings</div>
+            <div class="value">My</div>
+            <a asp-controller="Booking" asp-action="MyBookings" class="btn btn-primary mt-3">View My Bookings</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="label">Explore Events</div>
+            <div class="value">Now</div>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary mt-3">Browse Events</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="stat-card">
+            <div class="label">Ticket Access</div>
+            <div class="value">Fast</div>
+            <a asp-controller="Booking" asp-action="MyBookings" class="btn btn-outline-dark mt-3">My Tickets</a>
+        </div>
+    </div>
+</div>

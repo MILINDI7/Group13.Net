@@ -1,0 +1,13 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Pages/Index.cshtml
+.vs/
+bin/
+obj/
+
+appsettings.Development.json
+*.user
+*.suo
+secrets.json

@@ -1,0 +1,97 @@
+﻿@model List<ThirteenthAvenue.Models.Event>
+
+@{
+    ViewData["Title"] = "My Events";
+}
+
+<h2>My Events</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New Event</a>
+</p>
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-bordered align-middle">
+            <thead>
+                <tr>
+                    <th>Banner</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>City</th>
+                    <th>Venue</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Tickets</th>
+                    <th style="width: 320px;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ev in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (!string.IsNullOrWhiteSpace(ev.BannerImageUrl))
+                            {
+                                <img src="@ev.BannerImageUrl" alt="@ev.Title" style="width: 100px; height: 70px; object-fit: cover;" class="rounded" />
+                            }
+                            else
+                            {
+                                <span class="text-muted">No image</span>
+                            }
+                        </td>
+                        <td>@ev.Title</td>
+                        <td>@ev.Category?.Name</td>
+                        <td>@ev.City</td>
+                        <td>@ev.Venue</td>
+                        <td>@ev.EventDate.ToString("dd MMM yyyy")</td>
+                        <td>@ev.Status</td>
+                        <td>@ev.TicketTypes.Count</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@ev.Id" class="btn btn-sm btn-outline-secondary me-1">
+                                View
+                            </a>
+
+                            <a asp-action="Edit" asp-route-id="@ev.Id" class="btn btn-sm btn-outline-primary me-1">
+                                Edit
+                            </a>
+
+                            <a asp-action="Delete" asp-route-id="@ev.Id" class="btn btn-sm btn-outline-danger me-1">
+                                Delete
+                            </a>
+
+                            @if (ev.Status == ThirteenthAvenue.Models.Enums.EventStatus.Draft)
+                            {
+                                <form asp-action="Publish" asp-route-id="@ev.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-success">
+                                        Publish
+                                    </button>
+                                </form>
+                            }
+                            else if (ev.Status == ThirteenthAvenue.Models.Enums.EventStatus.Published)
+                            {
+                                <form asp-action="Unpublish" asp-route-id="@ev.Id" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-warning">
+                                        Unpublish
+                                    </button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p>No events created yet.</p>
+}
