@@ -52,19 +52,19 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    await DbSeeder.SeedRolesAndAdminAsync(services);
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    //await DbSeeder.SeedRolesAndAdminAsync(services);
+//}
 
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var context = services.GetRequiredService<ApplicationDbContext>();
 
-    await CategorySeeder.SeedAsync(context);
-}
+//    await CategorySeeder.SeedAsync(context);
+//}
 
 app.Run();
