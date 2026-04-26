@@ -51,7 +51,19 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+try
+{
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    await DbSeeder.SeedRolesAndAdminAsync(services);
 
+    var context = services.GetRequiredService<ApplicationDbContext>();
+    await CategorySeeder.SeedAsync(context);
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Seeding skipped: {ex.Message}");
+}
 //using (var scope = app.Services.CreateScope())
 //{
 //    var services = scope.ServiceProvider;
