@@ -38,7 +38,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
@@ -51,32 +51,20 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
-try
+
+using (var scope = app.Services.CreateScope())
 {
-    using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
     await DbSeeder.SeedRolesAndAdminAsync(services);
+}
 
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
+
     await CategorySeeder.SeedAsync(context);
 }
-catch (Exception ex)
-{
-    Console.WriteLine($"Seeding skipped: {ex.Message}");
-}
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    //await DbSeeder.SeedRolesAndAdminAsync(services);
-//}
-
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var context = services.GetRequiredService<ApplicationDbContext>();
-
-//    await CategorySeeder.SeedAsync(context);
-//}
 
 app.Run();
